@@ -23,18 +23,347 @@
 
         .container {
             text-align: center;
-            width: 90%;
-            max-width: 900px;
+            width: 95%;
+            max-width: 1000px;
         }
 
-        .titulo {
+        .slide-box {
+            border: 6px solid #ff69b4;
+            border-radius: 30px;
+            padding: 30px 30px;
+            background: white;
+            box-shadow: 0 10px 40px rgba(255, 105, 180, 0.3);
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 25px;
+            min-height: 100px;
+        }
+
+        .pet-nome {
+            font-size: 3.2em;
+            font-weight: bold;
+            color: #1a1a1a;
+            letter-spacing: 1px;
+        }
+
+        .variacao {
+            font-size: 2.2em;
+            color: #d63384;
+            border: 3px solid #ffb6d9;
+            padding: 5px 18px;
+            border-radius: 25px;
+            background: #fff5f9;
+            font-weight: bold;
+        }
+
+        .valor {
+            font-size: 3.5em;
+            font-weight: bolder;
+            color: #ff1493;
+            text-shadow: 2px 2px 0px #ffd1e8;
+            border: 3px dashed #ff69b4;
+            padding: 5px 25px;
+            border-radius: 20px;
+            background: linear-gradient(to bottom, #fff, #fff5f9);
+        }
+
+        .separador {
+            color: #ff69b4;
             font-size: 2.5em;
             font-weight: bold;
-            margin-bottom: 40px;
-            letter-spacing: 2px;
-            color: #d63384;
-            text-shadow: 2px 2px 0px #ffb6d9;
-            border: 4px solid #ff69b4;
+        }
+
+        .contador {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 1em;
+            color: #999;
+            border: 2px solid #ffb6d9;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                box-shadow: 0 10px 40px rgba(255, 105, 180, 0.3); 
+            }
+            50% { 
+                box-shadow: 0 15px 60px rgba(255, 105, 180, 0.6); 
+            }
+        }
+
+        .slide-box {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="slide-box" id="slideBox">
+            <span class="pet-nome" id="petNome">Ovo</span>
+            <span class="variacao" id="variacao">NP</span>
+            <span class="valor" id="valor">0,25</span>
+        </div>
+    </div>
+
+    <div class="contador" id="contador"></div>
+
+    <script>
+        const pets = [
+            { nome: "Ovo", variacao: "NP", valor: "0,25" },
+            { nome: "Ovo Cristal", variacao: "NP", valor: "0,25" },
+            { nome: "Ovo de Extinção", variacao: "NP", valor: "0,25" },
+            { nome: "Ovo do Jardim", variacao: "NP", valor: "0,25" },
+            { nome: "Pintinho Zodíaco", variacao: "NP", valor: "0,25" },
+            { nome: "Shadow Dragon", variacao: "NP", valor: "1599,89" },
+            { nome: "Frost Dragon", variacao: "NP", valor: "399,89" },
+            { nome: "Unicórnio Evil", variacao: "NFR", valor: "324,89" },
+            { nome: "Unicórnio Evil", variacao: "R", valor: "159,89" },
+            { nome: "Ouriço", variacao: "NP", valor: "99,79" },
+            { nome: "Crocodilo", variacao: "N", valor: "64,56" },
+            { nome: "Ganso", variacao: "NP", valor: "34,89" },
+            { nome: "Canguru", variacao: "NP", valor: "29,99" },
+            { nome: "Rei Macaco", variacao: "NP", valor: "27,99" },
+            { nome: "Crocodilo", variacao: "NP", valor: "20,99" },
+            { nome: "Cachorro Azul", variacao: "R", valor: "19,99" },
+            { nome: "Dragão de Lava", variacao: "NFR", valor: "25,99" },
+            { nome: "Dragão Vermelho", variacao: "MFR", valor: "16,99" },
+            { nome: "Dragão Arco-Íris", variacao: "N", valor: "9,99" },
+            { nome: "Dragão Antigo", variacao: "NP", valor: "7,99" },
+            { nome: "Dragão de Lava", variacao: "F", valor: "7,99" },
+            { nome: "Dragão Vermelho", variacao: "NR", valor: "5,99" },
+            { nome: "Dragão Naga", variacao: "NP", valor: "2,65" },
+            { nome: "Dragão Diamante", variacao: "NP", valor: "1,65" },
+            { nome: "Dragão Dourado", variacao: "NP", valor: "0,89" },
+            { nome: "Dragão Antigo", variacao: "NP", valor: "0,89" },
+            { nome: "Dragão Vermelho", variacao: "NP", valor: "0,89" },
+            { nome: "Unicórnio", variacao: "NFR", valor: "17,99" },
+            { nome: "Unicórnio", variacao: "NR", valor: "16,99" },
+            { nome: "Unicórnio", variacao: "NF", valor: "16,35" },
+            { nome: "Unicórnio", variacao: "N", valor: "15,99" },
+            { nome: "Alicórnio", variacao: "NR", valor: "5,99" },
+            { nome: "Alicórnio", variacao: "NP", valor: "0,89" },
+            { nome: "Unicórnio Dourado", variacao: "NP", valor: "0,99" },
+            { nome: "Unicórnio Diamante", variacao: "NP", valor: "0,89" },
+            { nome: "Grifo", variacao: "NFR", valor: "7,99" },
+            { nome: "Grifo Dourado", variacao: "FR", valor: "2,65" },
+            { nome: "Grifo Diamante", variacao: "FR", valor: "2,65" },
+            { nome: "Grifo Dourado", variacao: "NP", valor: "0,89" },
+            { nome: "Grifo Diamante", variacao: "NP", valor: "0,89" },
+            { nome: "Urso Gelado", variacao: "NP", valor: "11,89" },
+            { nome: "Urso Marrom", variacao: "NP", valor: "7,99" },
+            { nome: "Urso Gato Asiático", variacao: "NFR", valor: "4,99" },
+            { nome: "Urso Gato Asiático", variacao: "F", valor: "1,65" },
+            { nome: "Urso Glacial", variacao: "NP", valor: "1,65" },
+            { nome: "Urso Lunar", variacao: "NP", valor: "0,79" },
+            { nome: "Tigre Alado", variacao: "NP", valor: "16,99" },
+            { nome: "Tigre Lunar", variacao: "NP", valor: "1,65" },
+            { nome: "Coruja Purr", variacao: "NR", valor: "9,99" },
+            { nome: "Coruja do Além", variacao: "MR", valor: "5,99" },
+            { nome: "Coruja do Além", variacao: "N", valor: "2,99" },
+            { nome: "Coruja Purr", variacao: "NP", valor: "0,99" },
+            { nome: "Coruja Invernal", variacao: "NP", valor: "0,89" },
+            { nome: "Coruja Tangerina", variacao: "NP", valor: "0,79" },
+            { nome: "Morcego Fada", variacao: "NFR", valor: "64,89" },
+            { nome: "Morcegato", variacao: "N", valor: "5,99" },
+            { nome: "Morcego Pacó", variacao: "NP", valor: "1,65" },
+            { nome: "Morcegato", variacao: "NP", valor: "0,89" },
+            { nome: "Morcego Albino", variacao: "NP", valor: "0,65" },
+            { nome: "Lobo", variacao: "NR", valor: "7,99" },
+            { nome: "Lobo", variacao: "N", valor: "5,99" },
+            { nome: "Lobo Fantasma", variacao: "NP", valor: "1,90" },
+            { nome: "Lobo de Lava", variacao: "NP", valor: "0,89" },
+            { nome: "Gato Múmia", variacao: "NP", valor: "1,65" },
+            { nome: "Gato Múmia", variacao: "NP", valor: "0,79" },
+            { nome: "Gato Leopardo", variacao: "NP", valor: "1,65" },
+            { nome: "Gato Abissínio", variacao: "NP", valor: "0,90" },
+            { nome: "Gato das Neves", variacao: "NFR", valor: "1,99" },
+            { nome: "Gato Ruivo", variacao: "M", valor: "2,99" },
+            { nome: "Gato", variacao: "MR", valor: "2,99" },
+            { nome: "Mecha Gato", variacao: "NP", valor: "1,25" },
+            { nome: "Cão Robô", variacao: "NP", valor: "6,43" },
+            { nome: "Cão Robô", variacao: "R", valor: "1,65" },
+            { nome: "Husky", variacao: "NP", valor: "3,65" },
+            { nome: "São Bernardo", variacao: "NP", valor: "0,90" },
+            { nome: "Pomerânia", variacao: "NP", valor: "0,99" },
+            { nome: "Poodle", variacao: "MFR", valor: "2,99" },
+            { nome: "Poodle", variacao: "MR", valor: "2,99" },
+            { nome: "Shih Tzu", variacao: "Neon", valor: "0,90" },
+            { nome: "Dog", variacao: "MR", valor: "2,99" },
+            { nome: "Vaca Angus", variacao: "Mega", valor: "4,99" },
+            { nome: "Vaca Angus", variacao: "Neon", valor: "1,47" },
+            { nome: "Vaca das Terras Altas", variacao: "NP", valor: "0,99" },
+            { nome: "Vaca Irlandesa", variacao: "NP", valor: "1,99" },
+            { nome: "Bezerro Angus", variacao: "NP", valor: "1,24" },
+            { nome: "Bezerro Angus", variacao: "NP", valor: "0,79" },
+            { nome: "Touro", variacao: "NR", valor: "1,19" },
+            { nome: "Rato Nalmiscarado", variacao: "MR", valor: "3,25" },
+            { nome: "Rato Nalmiscarado", variacao: "M", valor: "2,99" },
+            { nome: "Rato", variacao: "M", valor: "1,99" },
+            { nome: "Rato", variacao: "N", valor: "0,89" },
+            { nome: "Hamster", variacao: "R", valor: "1,65" },
+            { nome: "Camundongo", variacao: "R", valor: "1,65" },
+            { nome: "Esquilo Vermelho", variacao: "R", valor: "1,65" },
+            { nome: "Esquilo Querubim", variacao: "NP", valor: "0,89" },
+            { nome: "Musaranho", variacao: "R", valor: "7,99" },
+            { nome: "Rena", variacao: "N", valor: "14,99" },
+            { nome: "Lebre", variacao: "NP", valor: "6,99" },
+            { nome: "Lebre Ártica", variacao: "NFR", valor: "2,99" },
+            { nome: "Coelho", variacao: "NR", valor: "1,90" },
+            { nome: "Coelho", variacao: "N", valor: "0,90" },
+            { nome: "Coelho d'Água", variacao: "NR", valor: "1,89" },
+            { nome: "Chocolate Coelho", variacao: "NP", valor: "0,99" },
+            { nome: "Sr. Coelhito", variacao: "NP", valor: "0,79" },
+            { nome: "Sra. Coelhita", variacao: "N", valor: "2,99" },
+            { nome: "Pinguim de Chocolate", variacao: "MR", valor: "13,78" },
+            { nome: "Pinguim", variacao: "NP", valor: "2,99" },
+            { nome: "Pinguim de Chocolate", variacao: "NP", valor: "0,99" },
+            { nome: "Pinguim Rei Dourado", variacao: "NP", valor: "1,19" },
+            { nome: "Macaco", variacao: "NR", valor: "1,90" },
+            { nome: "Macaco", variacao: "R", valor: "1,49" },
+            { nome: "Macaco", variacao: "N", valor: "0,89" },
+            { nome: "Gibão Vilão", variacao: "N", valor: "4,99" },
+            { nome: "Gibão Vilão", variacao: "NP", valor: "0,79" },
+            { nome: "Orangotango", variacao: "F", valor: "1,65" },
+            { nome: "Peixe Palhaço", variacao: "FR", valor: "2,65" },
+            { nome: "Peixe Espada", variacao: "R", valor: "1,90" },
+            { nome: "Peixe Espada", variacao: "N", valor: "0,90" },
+            { nome: "Golfinho Glorminoso", variacao: "NP", valor: "0,99" },
+            { nome: "Golfinho", variacao: "R", valor: "1,65" },
+            { nome: "Baleia Azul", variacao: "NP", valor: "0,74" },
+            { nome: "Peixe Betta", variacao: "NP", valor: "0,89" },
+            { nome: "Lula", variacao: "NP", valor: "0,78" },
+            { nome: "Camarão", variacao: "NP", valor: "0,99" },
+            { nome: "Caranguejo Pirata", variacao: "NP", valor: "0,89" },
+            { nome: "Bolacha do Mar", variacao: "NP", valor: "1,65" },
+            { nome: "Estrela do Mar", variacao: "NP", valor: "0,59" },
+            { nome: "Carpa Koi", variacao: "NP", valor: "0,99" },
+            { nome: "Orca", variacao: "NP", valor: "0,99" },
+            { nome: "Peixe Betta Laranja", variacao: "NP", valor: "0,90" },
+            { nome: "Arraia", variacao: "NR", valor: "1,90" },
+            { nome: "Caranguejo", variacao: "NR", valor: "1,90" },
+            { nome: "Santola", variacao: "R", valor: "1,49" },
+            { nome: "Lagosta Chiclete", variacao: "NP", valor: "0,68" },
+            { nome: "Cavalo-Marinho", variacao: "NP", valor: "0,99" },
+            { nome: "Mochi", variacao: "Mega", valor: "6,99" },
+            { nome: "Mochi", variacao: "NP", valor: "0,99" },
+            { nome: "Cubo de Morango", variacao: "NP", valor: "0,99" },
+            { nome: "Gogumelo", variacao: "NP", valor: "1,25" },
+            { nome: "Bolinhas Bobinhas", variacao: "NP", valor: "1,65" },
+            { nome: "Fofoluch", variacao: "NP", valor: "0,99" },
+            { nome: "Kaijunior", variacao: "N", valor: "5,99" },
+            { nome: "Kaijunior", variacao: "NP", valor: "0,79" },
+            { nome: "Kaijunior Tóxico", variacao: "N", valor: "0,89" },
+            { nome: "Kitsune de Latte", variacao: "NP", valor: "5,99" },
+            { nome: "Papagaio Drácula", variacao: "N", valor: "4,37" },
+            { nome: "Ave Amazônica", variacao: "Neon", valor: "4,99" },
+            { nome: "Papagaio Drácula", variacao: "NP", valor: "0,69" },
+            { nome: "Tucano", variacao: "N", valor: "0,99" },
+            { nome: "Tucano", variacao: "NP", valor: "0,59" },
+            { nome: "Cegonha Marabu", variacao: "NP", valor: "0,59" },
+            { nome: "Corvo Espantalho", variacao: "NFR", valor: "7,99" },
+            { nome: "Corvo Espantalho", variacao: "NP", valor: "0,79" },
+            { nome: "Corvo Kage", variacao: "N", valor: "1,99" },
+            { nome: "Falcão", variacao: "NP", valor: "0,89" },
+            { nome: "Faisão de Peito Verde", variacao: "NP", valor: "0,99" },
+            { nome: "Faisão de Peito Marrom", variacao: "NP", valor: "0,49" },
+            { nome: "Albatroz", variacao: "N", valor: "1,90" },
+            { nome: "Albatroz Dourado", variacao: "R", valor: "1,65" },
+            { nome: "Ave do Amor", variacao: "NP", valor: "0,90" },
+            { nome: "Pombinhas", variacao: "N", valor: "0,99" },
+            { nome: "Galo", variacao: "NP", valor: "1,19" },
+            { nome: "Dodo", variacao: "NP", valor: "1,25" },
+            { nome: "Dusk", variacao: "N", valor: "19,99" },
+            { nome: "Billy Goat", variacao: "NP", valor: "5,99" },
+            { nome: "Billy Goat", variacao: "NP", valor: "0,89" },
+            { nome: "Black Widow", variacao: "NP", valor: "0,89" },
+            { nome: "Axolotl", variacao: "R", valor: "7,32" },
+            { nome: "Ornitorrinco", variacao: "NP", valor: "5,32" },
+            { nome: "Preguiça", variacao: "R", valor: "1,65" },
+            { nome: "Preguiça", variacao: "NP", valor: "0,90" },
+            { nome: "Arminho", variacao: "NR", valor: "1,90" },
+            { nome: "Rinoceronte Negro", variacao: "NP", valor: "0,80" },
+            { nome: "Hipopótamo", variacao: "NP", valor: "0,99" },
+            { nome: "Mamute Nevado", variacao: "NP", valor: "1,99" },
+            { nome: "Yeti", variacao: "NP", valor: "1,25" },
+            { nome: "Chimera", variacao: "NP", valor: "0,79" },
+            { nome: "Criosphinx", variacao: "NP", valor: "1,65" },
+            { nome: "Quetzalcoatl", variacao: "NP", valor: "0,89" },
+            { nome: "Baku", variacao: "NP", valor: "0,79" },
+            { nome: "Pé Grande", variacao: "R", valor: "1,99" },
+            { nome: "Pé Grande", variacao: "NP", valor: "0,89" },
+            { nome: "Pé Grande Festivo", variacao: "M", valor: "2,99" },
+            { nome: "Pé Grande Festivo", variacao: "N", valor: "1,25" },
+            { nome: "Pé Grande Festivo", variacao: "NP", valor: "0,99" },
+            { nome: "Gorila Astronauta", variacao: "NP", valor: "2,65" },
+            { nome: "Cobra", variacao: "R", valor: "1,65" },
+            { nome: "Vela", variacao: "NP", valor: "0,89" },
+            { nome: "Cero do Medo", variacao: "NP", valor: "0,99" },
+            { nome: "Pintinho do Mal", variacao: "NP", valor: "1,89" },
+            { nome: "Fleur de Gelo", variacao: "NP", valor: "0,89" },
+            { nome: "Mula Sem Cabeça", variacao: "NP", valor: "0,99" },
+            { nome: "Iguana Chiclete", variacao: "NP", valor: "0,89" },
+            { nome: "Lince", variacao: "NP", valor: "1,25" },
+            { nome: "Koala", variacao: "NP", valor: "0,99" },
+            { nome: "Panda Vermelho", variacao: "N", valor: "0,90" },
+            { nome: "Onça Parda", variacao: "NP", valor: "1,59" },
+            { nome: "Onça", variacao: "N", valor: "0,99" },
+            { nome: "Jaguar", variacao: "Mega", valor: "2,99" },
+            { nome: "Raposa Sorrateira", variacao: "M", valor: "2,99" },
+            { nome: "Cavalo Alado", variacao: "F", valor: "1,65" },
+            { nome: "Garanhão Flamejante", variacao: "R", valor: "1,65" },
+            { nome: "Garanhão Flamejante", variacao: "NP", valor: "0,79" },
+            { nome: "Potro Flamejante", variacao: "M", valor: "3,99" },
+            { nome: "Potro Flamejante", variacao: "NFR", valor: "1,99" },
+            { nome: "Pônei Bonito", variacao: "NR", valor: "9,99" },
+            { nome: "Pônei Bonito", variacao: "NP", valor: "1,99" },
+            { nome: "Pônei Shetland", variacao: "NR", valor: "1,89" },
+            { nome: "Asneiro", variacao: "N", valor: "0,90" },
+            { nome: "Rena Biscoito", variacao: "R", valor: "1,65" },
+            { nome: "Rena Biscoito", variacao: "NP", valor: "0,79" },
+            { nome: "Cervo Dama do Inverno", variacao: "NP", valor: "0,79" },
+            { nome: "Alce Morto-Vivo", variacao: "NP", valor: "0,99" },
+            { nome: "Mamãe Moose", variacao: "NP", valor: "0,99" },
+            { nome: "Tio de Nadal", variacao: "NP", valor: "7,99" },
+            { nome: "Au Au Mouse de Natal", variacao: "NP", valor: "4,21" },
+            { nome: "Pequenatalino", variacao: "M", valor: "4,99" },
+            { nome: "Boneca Embrulhada", variacao: "NP", valor: "0,99" },
+            { nome: "Camaradinha do Tempo", variacao: "NP", valor: "0,79" },
+            { nome: "Robô", variacao: "N", valor: "0,90" },
+            { nome: "Metal Ox", variacao: "R", valor: "1,23" },
+            { nome: "Metal Ox", variacao: "NP", valor: "0,25" },
+            { nome: "Solplanante", variacao: "NP", valor: "1,65" },
+            { nome: "Solplanante", variacao: "NP", valor: "0,99" },
+            { nome: "Patinho Solar", variacao: "NFR", valor: "7,99" },
+            { nome: "Super Saru", variacao: "NP", valor: "1,54" },
+            { nome: "Black Springer", variacao: "NR", valor: "6,50" },
+            { nome: "Black Springer", variacao: "N", valor: "5,99" },
+            { nome: "Blue Ringed", variacao: "R", valor: "1,65" },
+            { nome: "Spinel Marrom", variacao: "NP", valor: "0,99" },
+            { nome: "Spinel Preto", variacao: "FR", valor: "2,65" },
+            { nome: "Aranha Arrepiante", variacao: "NP", valor: "0,49" },
+            { nome: "DJ Soneca", variacao: "Neon", valor: "4,99" },
+            { nome: "Rocha Pedra", variacao: "NR", valor: "2,99" },
+            { nome: "Dente de Sabre", variacao: "M", valor: "0,90" },
+            { nome: "Shia", variacao: "N", valor: "0,90" },
+            { nome: "Selo de Fita", variacao: "Mega", valor: "2,99" },
+            { nome: "Selo de Fita", variacao: "N", valor: "0,90" },
+            { nome: "Formiga", variacao: "MFR", valor: "2,99" },
+            { nome: "Casuar", variacao: "R", valor: "1,65" },
+            { nome: "Chanekeh", variacao: "N", valor: "0,90" },
+            { nome: "Libélula", variacao: "NP", valor: "4,99" },
+            { nome: "Libélula", variacao: "NP", valor: "0,69" },
+            { nome: "Borboleta Violeta", variacao: "NP", valor: "1,65" },
+            { nome: "Abelha", variacao: "NFR", valor: "3,99" },
+            { nome: "Joaninha", variacao: "NR", valor: "1,89" },
+            { nome: "Joaninha Dourada", variacao: "FR", valor: "2,65" },
+            { nome: "Joaninha de Diamante", variacao: "FR", valor: "2,65" },
+            { nome: "Besouro Tartaruga", variacao: "NP", valor:            border: 4px solid #ff69b4;
             display: inline-block;
             padding: 15px 30px;
             border-radius: 20px;
