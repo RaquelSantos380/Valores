@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐾 Valores Adopt Me - Live</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            width: 90%;
+            max-width: 900px;
+        }
+
+        .titulo {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+            color: #d63384;
+            text-shadow: 2px 2px 0px #ffb6d9;
+            border: 4px solid #ff69b4;
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 20px;
+            background: white;
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
+        }
+
+        .slide-box {
+            border: 6px solid #ff69b4;
+            border-radius: 30px;
+            padding: 50px 40px;
+            background: white;
+            box-shadow: 0 10px 40px rgba(255, 105, 180, 0.25);
+            min-height: 250px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .categoria {
+            font-size: 1.2em;
+            color: #ff1493;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+            border: 2px solid #ff69b4;
+            padding: 5px 20px;
+            border-radius: 25px;
+            display: inline-block;
+        }
+
+        .pet-nome {
+            font-size: 3.5em;
+            font-weight: bold;
+            color: #1a1a1a;
+            margin: 15px 0;
+            letter-spacing: 1px;
+        }
+
+        .variacao {
+            font-size: 2em;
+            color: #d63384;
+            margin: 10px 0;
+            border: 3px solid #ffb6d9;
+            padding: 8px 25px;
+            border-radius: 30px;
+            display: inline-block;
+            background: #fff5f9;
+            font-weight: bold;
+        }
+
+        .valor {
+            font-size: 5em;
+            font-weight: bolder;
+            color: #ff1493;
+            margin: 15px 0;
+            text-shadow: 3px 3px 0px #ffd1e8;
+            border: 4px dashed #ff69b4;
+            padding: 10px 40px;
+            border-radius: 25px;
+            background: linear-gradient(to bottom, #fff, #fff5f9);
+        }
+
+        .contador {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 1em;
+            color: #999;
+            border: 2px solid #ffb6d9;
+            padding: 8px 15px;
+            border-radius: 20px;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            font-size: 1em;
+            color: #ff69b4;
+            font-weight: bold;
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                box-shadow: 0 10px 40px rgba(255, 105, 180, 0.25); 
+            }
+            50% { 
+                box-shadow: 0 15px 60px rgba(255, 105, 180, 0.6); 
+            }
+        }
+
+        .slide-box {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="titulo">🐾✨ VALORES ADOPT ME ✨🐾</div>
+        
+        <div class="slide-box" id="slideBox">
+            <div class="categoria" id="categoria">🥚 OVOS</div>
+            <div class="pet-nome" id="petNome">Ovo</div>
+            <div class="variacao" id="variacao">NP</div>
+            <div class="valor" id="valor">0,25</div>
+        </div>
+    </div>
+
+    <div class="contador" id="contador"></div>
+    <div class="footer">🐾 Adopt Me Values</div>
+
+    <script>
+        // LISTA COMPLETA DE TODOS OS PETS COM VARIAÇÕES
+        const pets = [
+            // 🥚 OVOS
+            { categoria: "🥚 OVOS", nome: "Ovo", variacao: "NP", valor: "0,25" },
+            { categoria: "🥚 OVOS", nome: "Ovo Cristal", variacao: "NP", valor: "0,25" },
+            { categoria: "🥚 OVOS", nome: "Ovo de Extinção", variacao: "NP", valor: "0,25" },
+            { categoria: "🥚 OVOS", nome: "Ovo do Jardim", variacao: "NP", valor: "0,25" },
+            { categoria: "🥚 OVOS", nome: "Pintinho Zodíaco", variacao: "NP", valor: "0,25" },
+            
+            // 🔥 LENDÁRIOS
+            { categoria: "🔥 LENDÁRIO", nome: "Shadow Dragon", variacao: "NP", valor: "1599,89" },
+            { categoria: "🔥 LENDÁRIO", nome: "Frost Dragon", variacao: "NP", valor: "399,89" },
+            { categoria: "🔥 LENDÁRIO", nome: "Unicórnio Evil", variacao: "NFR", valor: "324,89" },
+            { categoria: "🔥 LENDÁRIO", nome: "Unicórnio Evil", variacao: "R", valor: "159,89" },
+            { categoria: "🔥 LENDÁRIO", nome: "Ouriço", variacao: "NP", valor: "99,79" },
+            { categoria: "🔥 LENDÁRIO", nome: "Crocodilo", variacao: "N", valor: "64,56" },
+            { categoria: "🔥 LENDÁRIO", nome: "Ganso", variacao: "NP", valor: "34,89" },
+            { categoria: "🔥 LENDÁRIO", nome: "Canguru", variacao: "NP", valor: "29,99" },
+            { categoria: "🔥 LENDÁRIO", nome: "Rei Macaco", variacao: "NP", valor: "27,99" },
+            { categoria: "🔥 LENDÁRIO", nome: "Crocodilo", variacao: "NP", valor: "20,99" },
+            { categoria: "🔥 LENDÁRIO", nome: "Cachorro Azul", variacao: "R", valor: "19,99" },
+            
+            // 🐉 DRAGÕES
+            { categoria: "🐉 DRAGÕES", nome: "Dragão de Lava", variacao: "NFR", valor: "25,99" },
+            { categoria: "🐉 DRAGÕES", nome: "Dragão Vermelho", variacao: "MFR", valor: "16,99" },
+            { categoria: "🐉 DRAGÕES", nome: "Dragão Arco-Íris", variacao: "N", valor: "9,99" },
+            { categoria: "🐉 DRAGÕES", nome: "Dragão Antigo", variacao: "NP", valor: "7,99" },
+            { categoria: "🐉 DRAGÕES", nome: "Dragão de Lava", variacao: "F", valor: "7,99" },
+            { categoria: "🐉 DRAGÕES", nome: "Dragão Vermelho", variacao: "NR", valor: "5,99" },
+            { categoria: "🐉 DRAGÕES", nome: "Dragão Naga", variacao: "NP", valor: "2,65" },
+            { categoria: "🐉 DRAGÕES", nome: "Dragão Diamante", variacao: "NP", valor: "1,65" },
+            { categoria: "🐉 DRAGÕES", nome: "Dragão Dourado", variacao: "NP", valor: "0,89" },
+            { categoria: "🐉 DRAGÕES", nome: "Dragão Antigo", variacao: "NP", valor: "0,89" },
+            { categoria: "🐉 DRAGÕES", nome: "Dragão Vermelho", variacao: "NP", valor: "0,89" },
+            
+            // 🦄 UNICÓRNIOS
+            { categoria: "🦄 UNICÓRNIOS", nome: "Unicórnio", variacao: "NFR", valor: "17,99" },
+            { categoria: "🦄 UNICÓRNIOS", nome: "Unicórnio", variacao: "NR", valor: "16,99" },
+            { categoria: "🦄 UNICÓRNIOS", nome: "Unicórnio", variacao: "NF", valor: "16,35" },
+            { categoria: "🦄 UNICÓRNIOS", nome: "Unicórnio", variacao: "N", valor: "15,99" },
+            { categoria: "🦄 UNICÓRNIOS", nome: "Alicórnio", variacao: "NR", valor: "5,99" },
+            { categoria: "🦄 UNICÓRNIOS", nome: "Alicórnio", variacao: "NP", valor: "0,89" },
+            { categoria: "🦄 UNICÓRNIOS", nome: "Unicórnio Dourado", variacao: "NP", valor: "0,99" },
+            { categoria: "🦄 UNICÓRNIOS", nome: "Unicórnio Diamante", variacao: "NP", valor: "0,89" },
+            
+            // 🦅 GRIFOS
+            { categoria: "🦅 GRIFOS", nome: "Grifo", variacao: "NFR", valor: "7,99" },
+            { categoria: "🦅 GRIFOS", nome: "Grifo Dourado", variacao: "FR", valor: "2,65" },
+            { categoria: "🦅 GRIFOS", nome: "Grifo Diamante", variacao: "FR", valor: "2,65" },
+            { categoria: "🦅 GRIFOS", nome: "Grifo Dourado", variacao: "NP", valor: "0,89" },
+            { categoria: "🦅 GRIFOS", nome: "Grifo Diamante", variacao: "NP", valor: "0,89" },
+            
+            // 🐻 URSOS
+            { categoria: "🐻 URSOS", nome: "Urso Gelado", variacao: "NP", valor: "11,89" },
+            { categoria: "🐻 URSOS", nome: "Urso Marrom", variacao: "NP", valor: "7,99" },
+            { categoria: "🐻 URSOS", nome: "Urso Gato Asiático", variacao: "NFR", valor: "4,99" },
+            { categoria: "🐻 URSOS", nome: "Urso Gato Asiático", variacao: "F", valor: "1,65" },
+            { categoria: "🐻 URSOS", nome: "Urso Glacial", variacao: "NP", valor: "1,65" },
+            { categoria: "🐻 URSOS", nome: "Urso Lunar", variacao: "NP", valor: "0,79" },
+            
+            // 🐯 TIGRES
+            { categoria: "🐯 TIGRES", nome: "Tigre Alado", variacao: "NP", valor: "16,99" },
+            { categoria: "🐯 TIGRES", nome: "Tigre Lunar", variacao: "NP", valor: "1,65" },
+            
+            // 🦉 CORUJAS
+            { categoria: "🦉 CORUJAS", nome: "Coruja Purr", variacao: "NR", valor: "9,99" },
+            { categoria: "🦉 CORUJAS", nome: "Coruja do Além", variacao: "MR", valor: "5,99" },
+            { categoria: "🦉 CORUJAS", nome: "Coruja do Além", variacao: "N", valor: "2,99" },
+            { categoria: "🦉 CORUJAS", nome: "Coruja Purr", variacao: "NP", valor: "0,99" },
+            { categoria: "🦉 CORUJAS", nome: "Coruja Invernal", variacao: "NP", valor: "0,89" },
+            { categoria: "🦉 CORUJAS", nome: "Coruja Tangerina", variacao: "NP", valor: "0,79" },
+            
+            // 🦇 MORCEGOS
+            { categoria: "🦇 MORCEGOS", nome: "Morcego Fada", variacao: "NFR", valor: "64,89" },
+            { categoria: "🦇 MORCEGOS", nome: "Morcegato", variacao: "N", valor: "5,99" },
+            { categoria: "🦇 MORCEGOS", nome: "Morcego Pacó", variacao: "NP", valor: "1,65" },
+            { categoria: "🦇 MORCEGOS", nome: "Morcegato", variacao: "NP", valor: "0,89" },
+            { categoria: "🦇 MORCEGOS", nome: "Morcego Albino", variacao: "NP", valor: "0,65" },
+            
+            // 🐺 LOBOS
+            { categoria: "🐺 LOBOS", nome: "Lobo", variacao: "NR", valor: "7,99" },
+            { categoria: "🐺 LOBOS", nome: "Lobo", variacao: "N", valor: "5,99" },
+            { categoria: "🐺 LOBOS", nome: "Lobo Fantasma", variacao: "NP", valor: "1,90" },
+            { categoria: "🐺 LOBOS", nome: "Lobo de Lava", variacao: "NP", valor: "0,89" },
+            
+            // 🐱 GATOS
+            { categoria: "🐱 GATOS", nome: "Gato Múmia", variacao: "NP", valor: "1,65" },
+            { categoria: "🐱 GATOS", nome: "Gato Múmia", variacao: "NP", valor: "0,79" },
+            { categoria: "🐱 GATOS", nome: "Gato Leopardo", variacao: "NP", valor: "1,65" },
+            { categoria: "🐱 GATOS", nome: "Gato Abissínio", variacao: "NP", valor: "0,90" },
+            { categoria: "🐱 GATOS", nome: "Gato das Neves", variacao: "NFR", valor: "1,99" },
+            { categoria: "🐱 GATOS", nome: "Gato Ruivo", variacao: "M", valor: "2,99" },
+            { categoria: "🐱 GATOS", nome: "Gato", variacao: "MR", valor: "2,99" },
+            { categoria: "🐱 GATOS", nome: "Mecha Gato", variacao: "NP", valor: "1,25" },
+            
+            // 🐶 CACHORROS
+            { categoria: "🐶 CACHORROS", nome: "Cão Robô", variacao: "NP", valor: "6,43" },
+            { categoria: "🐶 CACHORROS", nome: "Cão Robô", variacao: "R", valor: "1,65" },
+            { categoria: "🐶 CACHORROS", nome: "Husky", variacao: "NP", valor: "3,65" },
+            { categoria: "🐶 CACHORROS", nome: "São Bernardo", variacao: "NP", valor: "0,90" },
+            { categoria: "🐶 CACHORROS", nome: "Pomerânia", variacao: "NP", valor: "0,99" },
+            { categoria: "🐶 CACHORROS", nome: "Poodle", variacao: "MFR", valor: "2,99" },
+            { categoria: "🐶 CACHORROS", nome: "Poodle", variacao: "MR", valor: "2,99" },
+            { categoria: "🐶 CACHORROS", nome: "Shih Tzu", variacao: "Neon", valor: "0,90" },
+            { categoria: "🐶 CACHORROS", nome: "Dog", variacao: "MR", valor: "2,99" },
+            
+            // 🐮 VACAS
+            { categoria: "🐮 VACAS", nome: "Vaca Angus", variacao: "Mega", valor: "4,99" },
+            { categoria: "🐮 VACAS", nome: "Vaca Angus", variacao: "Neon", valor: "1,47" },
+            { categoria: "🐮 VACAS", nome: "Vaca das Terras Altas", variacao: "NP", valor: "0,99" },
+            { categoria: "🐮 VACAS", nome: "Vaca Irlandesa", variacao: "NP", valor: "1,99" },
+            { categoria: "🐮 VACAS", nome: "Bezerro Angus", variacao: "NP", valor: "1,24" },
+            { categoria: "🐮 VACAS", nome: "Bezerro Angus", variacao: "NP", valor: "0,79" },
+            { categoria: "🐮 VACAS", nome: "Touro", variacao: "NR", valor: "1,19" },
+            
+            // 🐭 ROEDORES
+            { categoria: "🐭 ROEDORES", nome: "Rato Nalmiscarado", variacao: "MR", valor: "3,25" },
+            { categoria: "🐭 ROEDORES", nome: "Rato Nalmiscarado", variacao: "M", valor: "2,99" },
+            { categoria: "🐭 ROEDORES", nome: "Rato", variacao: "M", valor: "1,99" },
+            { categoria: "🐭 ROEDORES", nome: "Rato", variacao: "N", valor: "0,89" },
+            { categoria: "🐭 ROEDORES", nome: "Hamster", variacao: "R", valor: "1,65" },
+            { categoria: "🐭 ROEDORES", nome: "Camundongo", variacao: "R", valor: "1,65" },
+            { categoria: "🐭 ROEDORES", nome: "Esquilo Vermelho", variacao: "R", valor: "1,65" },
+            { categoria: "🐭 ROEDORES", nome: "Esquilo Querubim", variacao: "NP", valor: "0,89" },
+            { categoria: "🐭 ROEDORES", nome: "Musaranho", variacao: "R", valor: "7,99" },
+            
+            // 🐰 COELHOS
+            { categoria: "🐰 COELHOS", nome: "Rena", variacao: "N", valor: "14,99" },
+            { categoria: "🐰 COELHOS", nome: "Lebre", variacao: "NP", valor: "6,99" },
+            { categoria: "🐰 COELHOS", nome: "Lebre Ártica", variacao: "NFR", valor: "2,99" },
+            { categoria: "🐰 COELHOS", nome: "Coelho", variacao: "NR", valor: "1,90" },
+            { categoria: "🐰 COELHOS", nome: "Coelho", variacao: "N", valor: "0,90" },
+            { categoria: "🐰 COELHOS", nome: "Coelho d'Água", variacao: "NR", valor: "1,89" },
+            { categoria: "🐰 COELHOS", nome: "Chocolate Coelho", variacao: "NP", valor: "0,99" },
+            { categoria: "🐰 COELHOS", nome: "Sr. Coelhito", variacao: "NP", valor: "0,79" },
+            { categoria: "🐰 COELHOS", nome: "Sra. Coelhita", variacao: "N", valor: "2,99" },
+            
+            // 🐧 PINGUINS
+            { categoria: "🐧 PINGUINS", nome: "Pinguim de Chocolate", variacao: "MR", valor: "13,78" },
+            { categoria: "🐧 PINGUINS", nome: "Pinguim", variacao: "NP", valor: "2,99" },
+            { categoria: "🐧 PINGUINS", nome: "Pinguim de Chocolate", variacao: "NP", valor: "0,99" },
+            { categoria: "🐧 PINGUINS", nome: "Pinguim Rei Dourado", variacao: "NP", valor: "1,19" },
+            
+            // 🐵 MACACOS
+            { categoria: "🐵 MACACOS", nome: "Macaco", variacao: "NR", valor: "1,90" },
+            { categoria: "🐵 MACACOS", nome: "Macaco", variacao: "R", valor: "1,49" },
+            { categoria: "🐵 MACACOS", nome: "Macaco", variacao: "N", valor: "0,89" },
+            { categoria: "🐵 MACACOS", nome: "Gibão Vilão", variacao: "N", valor: "4,99" },
+            { categoria: "🐵 MACACOS", nome: "Gibão Vilão", variacao: "NP", valor: "0,79" },
+            { categoria: "🐵 MACACOS", nome: "Orangotango", variacao: "F", valor: "1,65" },
+            
+            // 🐟 AQUÁTICOS
+            { categoria: "🐟 AQUÁTICOS", nome: "Peixe Palhaço", variacao: "FR", valor: "2,65" },
+            { categoria: "🐟 AQUÁTICOS", nome: "Peixe Espada", variacao: "R", valor: "1,90" },
+            { categoria: "🐟 AQUÁTICOS", nome: "Peixe Espada", variacao: "N", valor: "0,90" },
+            { categoria: "🐟 AQUÁTICOS", nome: "Golfinho Glorminoso", variacao: "NP", valor: "0,99" },
+            { categoria: "🐟 AQUÁTICOS", nome: "Golfinho", variacao: "R", valor: "1,65" },
+            { categoria: "🐟 AQUÁTICOS", nome: "Baleia Azul", variacao: "NP", valor: "0,74" },
+            { categoria: "🐟 AQUÁTICOS", nome: "Peixe Betta", variacao: "NP", valor: "0,89" },
+            { categoria: "🐟 AQUÁTICOS", nome: "Lula", variacao: "NP", valor: "0,78" },
+            { categoria: "🐟 AQUÁTICOS", nome: "Camarão", variacao: "NP", valor: "0,99" },
+            { categoria: "🐟 AQUÁTICOS", nome: "Caranguejo Pirata", variacao: "NP", valor: "0,89" },
+            { categoria: "🐟 AQUÁTICOS", nome: "Bolacha do Mar", variacao: "NP", valor: "1,65" },
+            { categoria: "🐟 AQUÁTICOS", nome: "Estrela do Mar", variacao: "NP", valor: "0,59" },
+            { categoria: "🐟 AQUÁTICOS", nome: "Carpa Koi", variacao: "NP", valor: "0,99" },
+            { categoria: "🐟 AQUÁTICOS", nome: "Orca", variacao: "NP", valor: "0,99" },
+            { categoria: "🐟 AQUÁTICOS", nome: "Peixe Betta Laranja", variacao: "NP", valor: "0,90" },
+            { categoria: "🐟 AQUÁTICOS", nome: "Arraia", variacao: "NR", valor: "1,90" },
+            { categoria: "🐟 AQUÁTICOS", nome: "Caranguejo", variacao: "NR", valor: "1,90" },
+            { categoria: "🐟 AQUÁTICOS", nome: "Santola", variacao: "R", valor: "1,49" },
+            { categoria: "🐟 AQUÁTICOS", nome: "Lagosta Chiclete", variacao: "NP", valor: "0,68" },
+            { categoria: "🐟 AQUÁTICOS", nome: "Cavalo-Marinho", variacao: "NP", valor: "0,99" },
+            
+            // 📦 ESPECIAIS
+            { categoria: "📦 ESPECIAIS", nome: "Mochi", variacao: "Mega", valor: "6,99" },
+            { categoria: "📦 ESPECIAIS", nome: "Mochi", variacao: "NP", valor: "0,99" },
+            { categoria: "📦 ESPECIAIS", nome: "Cubo de Morango", variacao: "NP", valor: "0,99" },
+            { categoria: "📦 ESPECIAIS", nome: "Gogumelo", variacao: "NP", valor: "1,25" },
+            { categoria: "📦 ESPECIAIS", nome: "Bolinhas Bobinhas", variacao: "NP", valor: "1,65" },
+            { categoria: "📦 ESPECIAIS", nome: "Fofoluch", variacao: "NP", valor: "0,99" },
+            { categoria: "📦 ESPECIAIS", nome: "Kaijunior", variacao: "N", valor: "5,99" },
+            { categoria: "📦 ESPECIAIS", nome: "Kaijunior", variacao: "NP", valor: "0,79" },
+            { categoria: "📦 ESPECIAIS", nome: "Kaijunior Tóxico", variacao: "N", valor: "0,89" },
+            { categoria: "📦 ESPECIAIS", nome: "Kitsune de Latte", variacao: "NP", valor: "5,99" },
+        ];
+
+        let indiceAtual = 0;
+        const totalSlides = pets.length;
+        
+        const categoriaEl = document.getElementById('categoria');
+        const petNomeEl = document.getElementById('petNome');
+        const variacaoEl = document.getElementById('variacao');
+        const valorEl = document.getElementById('valor');
+        const contadorEl = document.getElementById('contador');
+
+        function atualizarSlide() {
+            const pet = pets[indiceAtual];
+            categoriaEl.textContent = pet.categoria;
+            petNomeEl.textContent = pet.nome;
+            variacaoEl.textContent = pet.variacao;
+            valorEl.textContent = pet.valor;
+            contadorEl.textContent = `${indiceAtual + 1} / ${totalSlides}`;
+            
+            indiceAtual++;
+            if (indiceAtual >= totalSlides) {
+                indiceAtual = 0;
+            }
+        }
+
+        // Iniciar primeiro slide
+        atualizarSlide();
+        
+        // Trocar a cada 2 segundos (2000ms)
+        setInterval(atualizarSlide, 2000);
+    </script>
+</body>
+  </html>
